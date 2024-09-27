@@ -52,7 +52,7 @@ export default function Login() {
 	const onSubmit = async (data: LoginFormData) => {
 		try {
 			await dispatch(loginUser({ email: data.email, password: data.password }));
-			// router.push('/profile');
+			router.push('/profile');
 		} catch (error) {
 			console.error('Login failed:', error);
 		}
