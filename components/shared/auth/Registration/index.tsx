@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,7 +17,22 @@ import {
 	CardTitle,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Check, User, Briefcase, Lock } from 'lucide-react';
+import {
+	Check,
+	User,
+	Briefcase,
+	Lock,
+	EyeIcon,
+	EyeOffIcon,
+	Building,
+	Globe,
+	Mail,
+	AtSign,
+} from 'lucide-react';
+import { RootState } from '@/redux/store';
+import { registerUser } from '@/redux/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import Link from 'next/link';
 
 const schema = yup.object({
 	firstName: yup
@@ -78,6 +94,12 @@ type FormData = yup.InferType<typeof schema>;
 
 export default function Registration() {
 	const [step, setStep] = useState(1);
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const dispatch = useAppDispatch();
+	const router = useRouter();
+	const { isLoading, error } = useAppSelector((state: RootState) => state.auth);
+
 	const {
 		register,
 		handleSubmit,
@@ -87,9 +109,25 @@ export default function Registration() {
 		resolver: yupResolver(schema),
 	});
 
-	const onSubmit = (data: FormData) => {
-		console.log(data);
-		setStep(4);
+	const onSubmit = async (data: FormData) => {
+		try {
+			await dispatch(
+				registerUser({
+					email: data.email,
+					password: data.password,
+					firstName: data.firstName,
+					lastName: data.lastName,
+					username: data.username,
+					position: data.position,
+					companyName: data.companyName,
+					companyWebsite: data.companyWebsite,
+				}),
+			);
+			router.push('/profile');
+		} catch (error) {
+			setStep(3);
+			console.error('Registration failed:', error);
+		}
 	};
 
 	const nextStep = async () => {
@@ -108,15 +146,44 @@ export default function Registration() {
 		name: keyof FormData,
 		label: string,
 		type: string = 'text',
+		placeholder: string = '',
+		icon: React.ReactNode = null,
 	) => (
 		<div className='space-y-2'>
 			<Label htmlFor={name}>{label}</Label>
-			<Input
-				id={name}
-				type={type}
-				{...register(name)}
-				className={errors[name] ? 'border-red-500' : ''}
-			/>
+			<div className='relative'>
+				<Input
+					id={name}
+					type={type}
+					placeholder={placeholder}
+					{...register(name)}
+					className={cn('pl-10', errors[name] ? 'border-red-500' : '')}
+				/>
+				{icon && (
+					<div className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'>
+						{icon}
+					</div>
+				)}
+				{(name === 'password' || name === 'confirmPassword') && (
+					<Button
+						type='button'
+						variant='ghost'
+						size='sm'
+						className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
+						onClick={() =>
+							name === 'password'
+								? setShowPassword(!showPassword)
+								: setShowConfirmPassword(!showConfirmPassword)
+						}>
+						{(name === 'password' && showPassword) ||
+						(name === 'confirmPassword' && showConfirmPassword) ? (
+							<EyeOffIcon className='h-4 w-4 text-gray-400' />
+						) : (
+							<EyeIcon className='h-4 w-4 text-gray-400' />
+						)}
+					</Button>
+				)}
+			</div>
 			{errors[name] && (
 				<p className='text-red-500 text-sm'>{errors[name]?.message}</p>
 			)}
@@ -130,106 +197,164 @@ export default function Registration() {
 	];
 
 	return (
-		<Card className='w-full max-w-lg mx-auto mt-10'>
-			<CardHeader>
-				<CardTitle>Register</CardTitle>
-				<CardDescription>
-					Create your account in a few easy steps.
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<div className='mb-8'>
-					<div className='flex justify-between'>
-						{steps.map((s, i) => (
-							<div key={i} className='flex flex-col items-center'>
-								<div
-									className={cn(
-										'w-10 h-10 rounded-full border-2 flex items-center justify-center',
-										step > i
-											? 'bg-primary border-primary'
-											: step === i + 1
-											? 'border-primary text-primary'
-											: 'border-gray-300 text-gray-300',
-									)}>
-									{step > i ? (
-										<Check className='h-6 w-6 dark:text-black text-white' />
-									) : (
-										<s.icon className='h-5 w-5' />
+		<div className='min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+			<Card className='w-full max-w-md'>
+				<CardHeader>
+					<CardTitle className='text-2xl font-bold text-center'>
+						Register
+					</CardTitle>
+					<CardDescription className='text-center'>
+						Create your account in a few easy steps.
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<div className='mb-8'>
+						<div className='flex justify-between'>
+							{steps.map((s, i) => (
+								<div key={i} className='flex flex-col items-center'>
+									<div
+										className={cn(
+											'w-10 h-10 rounded-full border-2 flex items-center justify-center',
+											step > i
+												? 'bg-primary border-primary'
+												: step === i + 1
+												? 'border-primary text-primary'
+												: 'border-gray-300 text-gray-300',
+										)}>
+										{step > i ? (
+											<Check className='h-6 w-6 text-white dark:text-black' />
+										) : (
+											<s.icon className='h-5 w-5' />
+										)}
+									</div>
+									<div
+										className={cn(
+											'mt-2 text-sm',
+											step >= i + 1 ? 'text-primary' : 'text-gray-300',
+										)}>
+										{s.label}
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+
+					<form onSubmit={handleSubmit(onSubmit)}>
+						{step === 1 && (
+							<div className='space-y-4'>
+								<div className='grid grid-cols-2 gap-4'>
+									{renderInput(
+										'firstName',
+										'First Name',
+										'text',
+										'John',
+										<User size={18} />,
+									)}
+									{renderInput(
+										'lastName',
+										'Last Name',
+										'text',
+										'Doe',
+										<User size={18} />,
 									)}
 								</div>
-								<div
-									className={cn(
-										'mt-2 text-sm',
-										step >= i + 1 ? 'text-primary' : 'text-gray-300',
-									)}>
-									{s.label}
-								</div>
+								{renderInput(
+									'email',
+									'Email',
+									'email',
+									'john@example.com',
+									<Mail size={18} />,
+								)}
 							</div>
-						))}
+						)}
+
+						{step === 2 && (
+							<div className='space-y-4'>
+								{renderInput(
+									'position',
+									'Position',
+									'text',
+									'Software Engineer',
+									<Briefcase size={18} />,
+								)}
+								{renderInput(
+									'companyName',
+									'Company Name',
+									'text',
+									'Acme Inc.',
+									<Building size={18} />,
+								)}
+								{renderInput(
+									'companyWebsite',
+									'Company Website',
+									'url',
+									'https://example.com',
+									<Globe size={18} />,
+								)}
+							</div>
+						)}
+
+						{step === 3 && (
+							<div className='space-y-4'>
+								{renderInput(
+									'username',
+									'Username',
+									'text',
+									'johndoe',
+									<AtSign size={18} />,
+								)}
+								{renderInput(
+									'password',
+									'Password',
+									showPassword ? 'text' : 'password',
+									'••••••••',
+									<Lock size={18} />,
+								)}
+								{renderInput(
+									'confirmPassword',
+									'Confirm Password',
+									showConfirmPassword ? 'text' : 'password',
+									'••••••••',
+									<Lock size={18} />,
+								)}
+							</div>
+						)}
+
+						{error && <p className='text-red-500 mt-4'>{error}</p>}
+					</form>
+				</CardContent>
+				<CardFooter>
+					<div className='flex justify-between w-full'>
+						{step > 1 && step < 4 && (
+							<Button type='button' onClick={prevStep} variant='outline'>
+								Back
+							</Button>
+						)}
+						{step < 3 && (
+							<Button type='button' onClick={nextStep} className='ml-auto'>
+								Next
+							</Button>
+						)}
+						{step === 3 && (
+							<Button
+								type='submit'
+								onClick={handleSubmit(onSubmit)}
+								className='ml-auto'
+								disabled={isLoading}>
+								{isLoading ? 'Registering...' : 'Register'}
+							</Button>
+						)}
 					</div>
-				</div>
-
-				<form onSubmit={handleSubmit(onSubmit)}>
-					{step === 1 && (
-						<div className='space-y-4'>
-							<div className='grid grid-cols-2 gap-4'>
-								{renderInput('firstName', 'First Name')}
-								{renderInput('lastName', 'Last Name')}
-							</div>
-							{renderInput('email', 'Email', 'email')}
-						</div>
-					)}
-
-					{step === 2 && (
-						<div className='space-y-4'>
-							{renderInput('position', 'Position')}
-							{renderInput('companyName', 'Company Name')}
-							{renderInput('companyWebsite', 'Company Website', 'url')}
-						</div>
-					)}
-
-					{step === 3 && (
-						<div className='space-y-4'>
-							{renderInput('username', 'Username')}
-							{renderInput('password', 'Password', 'password')}
-							{renderInput('confirmPassword', 'Confirm Password', 'password')}
-						</div>
-					)}
-
-					{step === 4 && (
-						<div className='text-center space-y-4'>
-							<Check className='w-12 h-12 text-green-500 mx-auto' />
-							<h3 className='text-lg font-semibold'>Registration Complete!</h3>
-							<p>
-								Thank you for registering. Please check your email to verify
-								your account.
-							</p>
-						</div>
-					)}
-				</form>
-			</CardContent>
-			<CardFooter>
-				<div className='flex justify-between w-full'>
-					{step > 1 && step < 4 && (
-						<Button type='button' onClick={prevStep} variant='outline'>
-							Back
-						</Button>
-					)}
-					{step < 3 && (
-						<Button type='button' onClick={nextStep} className='ml-auto'>
-							Next
-						</Button>
-					)}
-					{step === 3 && (
-						<Button
-							type='submit'
-							onClick={handleSubmit(onSubmit)}
-							className='ml-auto'>
-							Register
-						</Button>
-					)}
-				</div>
-			</CardFooter>
-		</Card>
+				</CardFooter>
+				{step === 3 && (
+					<div className='text-sm text-center mt-4 mb-4'>
+						Already have an account?{' '}
+						<Link href='/login' className='text-primary hover:underline'>
+							Log in
+						</Link>
+					</div>
+				)}
+			</Card>
+		</div>
 	);
 }
