@@ -64,6 +64,7 @@ export function MainNav({
             <NavLinks />
           </nav>
         </div>
+        {/* mobile menu */}
         <Sheet>
           <SheetTrigger asChild>
             <Button
