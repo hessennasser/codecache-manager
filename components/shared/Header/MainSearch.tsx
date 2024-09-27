@@ -1,31 +1,17 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
 	Sheet,
-	SheetClose,
 	SheetContent,
 	SheetDescription,
-	SheetFooter,
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet';
 import Link from 'next/link';
-
-type Props = {
-	isSearchOpen: boolean;
-	setIsSearchOpen: (isSearchOpen: boolean) => void;
-};
 
 const test = [
 	{
@@ -42,7 +28,7 @@ const test = [
 	},
 ];
 
-const MainSearch: React.FC<Props> = ({ isSearchOpen, setIsSearchOpen }) => {
+const MainSearch = () => {
 	return (
 		<div className='w-full flex-1 md:w-auto md:flex-none'>
 			<Sheet>
