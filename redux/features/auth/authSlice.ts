@@ -171,11 +171,14 @@ const authSlice = createSlice({
 			.addCase(getMe.pending, state => {
 				state.isLoading = true;
 			})
-			.addCase(getMe.fulfilled, (state, action: PayloadAction<User>) => {
-				state.isLoading = false;
-				state.user = action.payload;
-				state.error = null;
-			})
+			.addCase(
+				getMe.fulfilled,
+				(state, action: PayloadAction<{ user: User }>) => {
+					state.isLoading = false;
+					state.user = action.payload.user;
+					state.error = null;
+				},
+			)
 			.addCase(getMe.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload as string;
