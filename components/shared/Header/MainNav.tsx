@@ -52,7 +52,7 @@ export function MainNav({
       )}
       {...props}
     >
-      <div className="container flex h-14 items-center">
+      <div className="container relative flex h-14 items-center justify-between">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Code className="h-6 w-6 text-primary text-white" />
@@ -88,6 +88,13 @@ export function MainNav({
             </nav>
           </SheetContent>
         </Sheet>
+        {/* header on mobile screen */}
+        <div className="flex md:hidden absolute left-1/2 transform -translate-x-1/2">
+          <Link href="/" className="flex items-center space-x-2">
+            <Code className="h-6 w-6 text-primary text-white" />
+            <span className="font-bold text-white">codeCache</span>
+          </Link>
+        </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <MainSearch />
           <nav className="flex items-center gap-2">
@@ -99,3 +106,4 @@ export function MainNav({
     </header>
   );
 }
+
