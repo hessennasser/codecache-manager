@@ -1,47 +1,60 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { Code, Home, Plus, User, Menu } from "lucide-react";
-import { ThemeSwitcher } from "@/components/shared/Header/ThemeSwitcher";
-import { UserNav } from "./UserNav";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import MainSearch from "./MainSearch";
+import React, { useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { cn } from '@/lib/utils';
+import { Code, Home, Plus, User, Menu, LogIn, UserPlus } from 'lucide-react';
+import { ThemeSwitcher } from '@/components/shared/Header/ThemeSwitcher';
+import { UserNav } from './UserNav';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import MainSearch from './MainSearch';
+import { RootState } from '@/redux/store';
+import { useAppDispatch } from '@/hooks/useRedux';
+import { getMe } from '@/redux/features/auth/authSlice';
 
 export function MainNav({
-  className,
-  ...props
+	className,
+	...props
 }: React.HTMLAttributes<HTMLElement>) {
-  const pathname = usePathname();
+	const pathname = usePathname();
+	const dispatch = useAppDispatch();
+	const { user } = useSelector((state: RootState) => state.auth);
 
-  const navItems = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "/snippets", label: "Snippets", icon: Code },
-    { href: "/create", label: "Create", icon: Plus },
-    { href: "/profile", label: "Profile", icon: User },
-  ];
+	const refreshUserInfo = () => {
+		dispatch(getMe());
+	};
 
-  const NavLinks = ({ mobile = false }) => (
-    <>
-      {navItems.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={cn(
-            "flex items-center space-x-2 text-sm font-medium transition-colors hover:text-gray-100",
-            pathname === item.href ? "text-gray-100" : "text-gray-300",
-            mobile && "py-2"
-          )}
-        >
-          <item.icon className="h-4 w-4" />
-          <span>{item.label}</span>
-        </Link>
-      ))}
-    </>
-  );
+	useEffect(() => {
+		refreshUserInfo();
+	}, []);
+
+	const navItems = [
+		{ href: '/', label: 'Home', icon: Home },
+		{ href: '/snippets', label: 'Snippets', icon: Code },
+		{ href: '/create', label: 'Create', icon: Plus },
+		{ href: '/profile', label: 'Profile', icon: User },
+	];
+
+	const NavLinks = ({ mobile = false }) => (
+		<>
+			{navItems.map(item => (
+				<Link
+					key={item.href}
+					href={item.href}
+					className={cn(
+						'flex items-center space-x-2 text-sm font-medium transition-colors hover:text-gray-100',
+						pathname === item.href ? 'text-gray-100' : 'text-gray-300',
+						mobile && 'py-2',
+					)}>
+					<item.icon className='h-4 w-4' />
+					<span>{item.label}</span>
+				</Link>
+			))}
+		</>
+	);
 
   return (
     <header
@@ -52,7 +65,7 @@ export function MainNav({
       )}
       {...props}
     >
-      <div className="container relative flex h-14 items-center justify-between">
+      <div className="container flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Code className="h-6 w-6 text-primary text-white" />
@@ -88,13 +101,6 @@ export function MainNav({
             </nav>
           </SheetContent>
         </Sheet>
-        {/* header on mobile screen */}
-        <div className="flex md:hidden absolute left-1/2 transform -translate-x-1/2">
-          <Link href="/" className="flex items-center space-x-2">
-            <Code className="h-6 w-6 text-primary text-white" />
-            <span className="font-bold text-white">codeCache</span>
-          </Link>
-        </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <MainSearch />
           <nav className="flex items-center gap-2">
@@ -106,4 +112,3 @@ export function MainNav({
     </header>
   );
 }
-
