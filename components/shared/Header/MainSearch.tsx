@@ -13,21 +13,6 @@ import {
 } from "@/components/ui/sheet";
 import Link from "next/link";
 
-const test = [
-  {
-    id: 1,
-    title: "title1",
-  },
-  {
-    id: 1,
-    title: "title1",
-  },
-  {
-    id: 1,
-    title: "title1",
-  },
-];
-
 const MainSearch = () => {
   return (
     <div className="w-full flex-1 md:w-auto md:flex-none">
@@ -69,13 +54,6 @@ const MainSearch = () => {
                 autoFocus
               />
             </div>
-          </div>
-          <div className="flex flex-col gap-2 items-start">
-            {test.map((item, index) => (
-              <Link href={`snippets/${item.id}`} key={index}>
-                {item.title}
-              </Link>
-            ))}
           </div>
         </SheetContent>
       </Sheet>

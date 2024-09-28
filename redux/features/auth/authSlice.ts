@@ -103,15 +103,14 @@ export const logoutUser = createAsyncThunk(
 	},
 );
 
-export const userProfile = createAsyncThunk(
-	'auth/check',
+export const getMe = createAsyncThunk(
+	'auth/getMe',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await api.get<{ user: User }>('/auth/user_profile');
-			return response.data.user;
+			const response = await api.get<{ user: User }>('/me');
+			return response.data;
 		} catch (error) {
-			Cookies.remove('token');
-			return rejectWithValue('Authentication check failed.');
+			return rejectWithValue('Failed to fetch user information.');
 		}
 	},
 );
@@ -139,7 +138,6 @@ const authSlice = createSlice({
 				state.isLoading = false;
 				state.error = action.payload as string;
 			})
-
 			.addCase(registerUser.pending, state => {
 				state.isLoading = true;
 				state.error = null;
@@ -157,7 +155,6 @@ const authSlice = createSlice({
 				state.isLoading = false;
 				state.error = action.payload as string;
 			})
-
 			.addCase(logoutUser.pending, state => {
 				state.isLoading = true;
 			})
@@ -171,21 +168,16 @@ const authSlice = createSlice({
 				state.isLoading = false;
 				state.error = action.payload as string;
 			})
-
-			.addCase(userProfile.pending, state => {
+			.addCase(getMe.pending, state => {
 				state.isLoading = true;
 			})
-			.addCase(userProfile.fulfilled, (state, action: PayloadAction<User>) => {
+			.addCase(getMe.fulfilled, (state, action: PayloadAction<User>) => {
 				state.isLoading = false;
 				state.user = action.payload;
-				state.isInitialized = true;
 				state.error = null;
 			})
-			.addCase(userProfile.rejected, (state, action) => {
+			.addCase(getMe.rejected, (state, action) => {
 				state.isLoading = false;
-				state.user = null;
-				state.token = null;
-				state.isInitialized = true;
 				state.error = action.payload as string;
 			});
 	},
