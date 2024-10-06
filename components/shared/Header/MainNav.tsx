@@ -14,6 +14,7 @@ import MainSearch from './MainSearch';
 import { RootState } from '@/redux/store';
 import { useAppDispatch } from '@/hooks/useRedux';
 import { getMe } from '@/redux/features/auth/authSlice';
+import Cookies from 'js-cookie';
 
 export function MainNav({
 	className,
@@ -22,14 +23,18 @@ export function MainNav({
 	const pathname = usePathname();
 	const dispatch = useAppDispatch();
 	const { user } = useSelector((state: RootState) => state.auth);
+	const token = Cookies.get('token');
 
 	const refreshUserInfo = () => {
+		if (!token) return;
 		dispatch(getMe());
 	};
 
+	console.log(user);
+
 	useEffect(() => {
 		refreshUserInfo();
-	}, []);
+	}, [token]);
 
 	const navItems = [
 		{ href: '/', label: 'Home', icon: Home },
@@ -123,7 +128,7 @@ export function MainNav({
 						) : (
 							<div className='hidden md:flex items-center space-x-2'>
 								<Link href='/login'>
-									<Button variant='ghost'>Login</Button>
+									<Button variant='outline'>Login</Button>
 								</Link>
 								<Link href='/register'>
 									<Button>Register</Button>

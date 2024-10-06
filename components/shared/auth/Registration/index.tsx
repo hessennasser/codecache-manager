@@ -122,8 +122,9 @@ export default function Registration() {
 					companyName: data.companyName,
 					companyWebsite: data.companyWebsite,
 				}),
-			);
-			router.push('/profile');
+			)
+				.unwrap()
+				.then(() => router.push('/profile'));
 		} catch (error) {
 			setStep(3);
 			console.error('Registration failed:', error);
