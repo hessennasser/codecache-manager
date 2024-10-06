@@ -14,7 +14,7 @@ export const fetchSnippets = createAsyncThunk(
 	) => {
 		try {
 			const response = await api.get(
-				`/admin/snippets?page=${page}&search=${search}&limit=${limit}`,
+				`/me/snippets?page=${page}&search=${search}&limit=${limit}`,
 			);
 			return response.data;
 		} catch (error: any) {
@@ -27,7 +27,7 @@ export const fetchSnippetById = createAsyncThunk(
 	'snippets/fetchById',
 	async (id: number, { rejectWithValue }) => {
 		try {
-			const response = await api.get(`/admin/snippets/${id}`);
+			const response = await api.get(`/me/snippets/${id}`);
 			return response.data;
 		} catch (error: any) {
 			return rejectWithValue(error.response.data.errors);
@@ -35,15 +35,20 @@ export const fetchSnippetById = createAsyncThunk(
 	},
 );
 
+export interface SnippetData {
+	title: string;
+	description?: string;
+	content: string;
+	tags: string[];
+	language: string;
+	isPublic: boolean;
+}
+
 export const createSnippet = createAsyncThunk(
 	'snippets/create',
-	async (snippetData: FormData, { rejectWithValue }) => {
+	async (snippetData: SnippetData, { rejectWithValue }) => {
 		try {
-			const response = await api.post('/admin/snippets', snippetData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
+			const response = await api.post('/me/snippets', snippetData);
 			return response.data;
 		} catch (error: any) {
 			return rejectWithValue(error.response?.data || 'An error occurred');
@@ -58,11 +63,7 @@ export const updateSnippet = createAsyncThunk(
 		{ rejectWithValue },
 	) => {
 		try {
-			const response = await api.post(`/admin/snippets/${id}`, snippetData, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
+			const response = await api.post(`/me/snippets/${id}`, snippetData);
 			return response.data;
 		} catch (error: any) {
 			return rejectWithValue(error.response.data.errors);
@@ -74,7 +75,7 @@ export const deleteSnippet = createAsyncThunk(
 	'snippets/delete',
 	async (id: number, { rejectWithValue }) => {
 		try {
-			await api.delete(`/admin/snippets/${id}`);
+			await api.delete(`/me/snippets/${id}`);
 			return id;
 		} catch (error: any) {
 			return rejectWithValue(error.response.data.errors);
@@ -86,7 +87,7 @@ export const fetchSnippetJobs = createAsyncThunk(
 	'snippets/fetchJobs',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await api.get('/admin/snippets/job');
+			const response = await api.get('/me/snippets/job');
 			return response.data.data;
 		} catch (error: any) {
 			return rejectWithValue(error.response.data.errors);
@@ -98,7 +99,7 @@ export const fetchEmploymentStatuses = createAsyncThunk(
 	'snippets/fetchStatuses',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await api.get('/admin/snippets/status');
+			const response = await api.get('/me/snippets/status');
 			return response.data.data;
 		} catch (error: any) {
 			return rejectWithValue(error.response.data.errors);

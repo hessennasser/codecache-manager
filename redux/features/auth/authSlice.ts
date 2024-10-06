@@ -1,9 +1,10 @@
-import api from '@/lib/api';
+import api from '@/utils/api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 interface User {
+	isEmailVerified: any;
 	id: number;
 	firstName: string;
 	lastName: string;
@@ -115,6 +116,31 @@ export const getMe = createAsyncThunk(
 	},
 );
 
+interface UpdateProfileData {
+	firstName?: string;
+	lastName?: string;
+	username?: string;
+	position?: string;
+	companyName?: string;
+	companyWebsite?: string;
+	password?: string;
+}
+
+export const updateProfile = createAsyncThunk(
+	'auth/updateProfile',
+	async (profileData: UpdateProfileData, { rejectWithValue }) => {
+		try {
+			const response = await api.put<{ user: User }>(
+				'/auth/update-profile',
+				profileData,
+			);
+			return response.data.user;
+		} catch (error) {
+			return rejectWithValue('Failed to update profile. Please try again.');
+		}
+	},
+);
+
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
@@ -180,6 +206,21 @@ const authSlice = createSlice({
 				},
 			)
 			.addCase(getMe.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload as string;
+			})
+			.addCase(updateProfile.pending, state => {
+				state.isLoading = true;
+				state.error = null;
+			})
+			.addCase(
+				updateProfile.fulfilled,
+				(state, action: PayloadAction<User>) => {
+					state.isLoading = false;
+					state.error = null;
+				},
+			)
+			.addCase(updateProfile.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload as string;
 			});

@@ -7,6 +7,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
+// add title and desc meta tags
+export const metadata = {
+	title: 'CodeCache - Code snippets',
+	description: 'CodeCache - Code snippets for developers, engineers, and more.',
+};
+
 export default function RootLayout({
 	children,
 }: {
