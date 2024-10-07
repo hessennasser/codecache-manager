@@ -1,8 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from '@/utils/api';
-import { Snippet } from './types';
 
-export const fetchSnippets = createAsyncThunk(
+export const fetchHomeSnippets = createAsyncThunk(
 	'snippets/fetchAll',
 	async (
 		{
@@ -14,7 +13,39 @@ export const fetchSnippets = createAsyncThunk(
 	) => {
 		try {
 			const response = await api.get(
-				`/me/snippets?page=${page}&search=${search}&limit=${limit}`,
+				`/snippets?page=${page}&search=${search}&limit=${limit}`,
+			);
+			return response.data;
+		} catch (error: any) {
+			return rejectWithValue(error.response.data.errors);
+		}
+	},
+);
+
+export const fetchMySnippets = createAsyncThunk(
+	'snippets/fetchMine',
+	async (
+		{
+			page = 1,
+			search = '',
+			limit = 10,
+			language = '',
+			tag = [],
+		}: {
+			page?: number;
+			search?: string;
+			limit?: number;
+			language?: string;
+			tag?: string[];
+		},
+
+		{ rejectWithValue },
+	) => {
+		try {
+			const response = await api.get(
+				`/me/snippets?page=${page}&search=${search}&limit=${limit}&language=${language}&tags=${tag.join(
+					',',
+				)}`,
 			);
 			return response.data;
 		} catch (error: any) {
@@ -77,30 +108,6 @@ export const deleteSnippet = createAsyncThunk(
 		try {
 			await api.delete(`/me/snippets/${id}`);
 			return id;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data.errors);
-		}
-	},
-);
-
-export const fetchSnippetJobs = createAsyncThunk(
-	'snippets/fetchJobs',
-	async (_, { rejectWithValue }) => {
-		try {
-			const response = await api.get('/me/snippets/job');
-			return response.data.data;
-		} catch (error: any) {
-			return rejectWithValue(error.response.data.errors);
-		}
-	},
-);
-
-export const fetchEmploymentStatuses = createAsyncThunk(
-	'snippets/fetchStatuses',
-	async (_, { rejectWithValue }) => {
-		try {
-			const response = await api.get('/me/snippets/status');
-			return response.data.data;
 		} catch (error: any) {
 			return rejectWithValue(error.response.data.errors);
 		}

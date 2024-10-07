@@ -39,7 +39,7 @@ export function MainNav({
 	const navItems = [
 		{ href: '/', label: 'Home', icon: Home },
 		{ href: '/snippets', label: 'Snippets', icon: Code },
-		{ href: '/create', label: 'Create', icon: Plus },
+		{ href: '/create-snippet', label: 'Create', icon: Plus },
 		{ href: '/profile', label: 'Profile', icon: User },
 	];
 

@@ -1,0 +1,16 @@
+export const languageOptions = [
+	'javascript',
+	'typescript',
+	'python',
+	'java',
+	'c',
+	'cpp',
+	'csharp',
+	'go',
+	'rust',
+	'php',
+	'ruby',
+	'swift',
+	'kotlin',
+	'scala',
+];

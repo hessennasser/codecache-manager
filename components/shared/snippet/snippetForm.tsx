@@ -38,6 +38,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { Highlight, themes } from 'prism-react-renderer';
 import { useRouter } from 'next/navigation';
+import { languageOptions } from '@/lib/constants';
 
 interface FormData {
 	title: string;
@@ -47,23 +48,6 @@ interface FormData {
 	language: string;
 	isPublic: boolean;
 }
-
-const languageOptions = [
-	'javascript',
-	'typescript',
-	'python',
-	'java',
-	'c',
-	'cpp',
-	'csharp',
-	'go',
-	'rust',
-	'php',
-	'ruby',
-	'swift',
-	'kotlin',
-	'scala',
-];
 
 export default function SnippetForm() {
 	const dispatch = useAppDispatch();

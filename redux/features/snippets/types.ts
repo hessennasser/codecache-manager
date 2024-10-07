@@ -1,68 +1,48 @@
+import { User } from '@/types/snippet';
+
 export interface Snippet {
-  id: number;
-  name: string;
-  phone: string;
-  username: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-  image: string;
-  employmentStatus: {
-    en: string;
-    de: string;
-  };
-  snippetJob: {
-    en: string;
-    de: string;
-  };
-  snippet_job_id: number;
-  employment_status_id: number;
-  date_of_birth: string;
-  gender: string;
-  address: string;
-  joining_date: string;
-  salary: number;
-  payment_information: string;
-}
-
-export interface SnippetJob {
-  id: number;
-  title: {
-    en: string;
-    de: string;
-  };
-}
-
-export interface EmploymentStatus {
-  id: number;
-  title: {
-    en: string;
-    de: string;
-  };
+	id: string;
+	title: string;
+	description?: string;
+	content: string;
+	tags: string[];
+	language: string;
+	userId: string;
+	user: User;
+	isPublic: boolean;
+	viewCount: number;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface SnippetState {
-  snippets: {
-    snippets: Snippet[];
-    pagination: any;
-  };
-  selectedSnippet: Snippet | null;
-  snippetJobs: SnippetJob[];
-  employmentStatuses: EmploymentStatus[];
-  loading: boolean;
-  totalPages: number;
-  currentPage: number;
+	snippets: {
+		snippets: Snippet[];
+		pagination: {
+			total: number;
+			page: number;
+			limit: number;
+			totalPages: number;
+			hasNextPage: boolean;
+			hasPrevPage: boolean;
+		};
+	};
+	selectedSnippet: Snippet | null;
+	loading: boolean;
 }
 
 export const initialState: SnippetState = {
-  snippets: {
-    snippets: [],
-    pagination: {},
-  },
-  selectedSnippet: null,
-  snippetJobs: [],
-  employmentStatuses: [],
-  loading: false,
-  totalPages: 1,
-  currentPage: 1,
+	snippets: {
+		snippets: [],
+		pagination: {
+			total: 0,
+			page: 1,
+			limit: 10,
+			totalPages: 0,
+			hasNextPage: false,
+			hasPrevPage: false,
+		},
+	},
+	selectedSnippet: null,
+	loading: false,
 };
