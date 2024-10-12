@@ -23,36 +23,39 @@ export default function MySnippetsPage({
 
 	const searchTerm =
 		typeof searchParams.search === 'string' ? searchParams.search : '';
-	const selectedLanguage =
-		typeof searchParams.language === 'string' ? searchParams.language : '';
-	const selectedTag =
-		typeof searchParams.tag === 'string' ? searchParams.tag : '';
+	const selectedProgrammingLanguage =
+		typeof searchParams.programmingLanguage === 'string'
+			? searchParams.programmingLanguage
+			: '';
+	const selectedTags = Array.isArray(searchParams.tags)
+		? searchParams.tags
+		: typeof searchParams.tags === 'string'
+		? [searchParams.tags]
+		: [];
 	const page =
 		typeof searchParams.page === 'string' ? parseInt(searchParams.page, 10) : 1;
 
-	useEffect(() => {
-		const tagsAsArray = selectedTag.split(',').filter(Boolean);
-		dispatch(
-			fetchMySnippets({
-				search: searchTerm,
-				language: selectedLanguage,
-				tag: tagsAsArray,
-				page,
-			}),
-		);
-	}, [dispatch, searchTerm, selectedLanguage, selectedTag, page]);
-
 	const handleSearch = (
 		newSearchTerm: string,
-		newLanguage: string,
-		newTag: string,
+		newProgrammingLanguage: string,
+		newTags: string[],
 	) => {
 		const params = new URLSearchParams();
 		if (newSearchTerm) params.set('search', newSearchTerm);
-		if (newLanguage !== '') params.set('language', newLanguage);
-		if (newTag !== '') params.set('tag', newTag);
-		params.set('page', '1'); // Reset to first page on new search
-		router.push(`/my-snippets?${params.toString()}`);
+		if (newProgrammingLanguage !== 'all')
+			params.set('programmingLanguage', newProgrammingLanguage);
+		if (newTags.length > 0) params.set('tags', newTags.join(','));
+		params.set('page', '1');
+		router.push(`/?${params.toString()}`);
+
+		dispatch(
+			fetchMySnippets({
+				search: searchTerm,
+				programmingLanguage: selectedProgrammingLanguage,
+				tags: selectedTags,
+				page,
+			}),
+		);
 	};
 
 	const handlePageChange = (newPage: number) => {
@@ -60,6 +63,10 @@ export default function MySnippetsPage({
 		params.set('page', newPage.toString());
 		router.push(`/my-snippets?${params.toString()}`);
 	};
+
+	useEffect(() => {
+		dispatch(fetchMySnippets({}));
+	}, [dispatch]);
 
 	if (loading) {
 		return (
@@ -80,8 +87,8 @@ export default function MySnippetsPage({
 
 			<SearchForm
 				initialSearchTerm={searchTerm}
-				initialLanguage={selectedLanguage}
-				initialTag={selectedTag}
+				initialProgrammingLanguage={selectedProgrammingLanguage}
+				initialTags={selectedTags}
 				onSearch={handleSearch}
 			/>
 

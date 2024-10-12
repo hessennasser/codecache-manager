@@ -38,14 +38,14 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { Highlight, themes } from 'prism-react-renderer';
 import { useRouter } from 'next/navigation';
-import { languageOptions } from '@/lib/constants';
+import { programmingLanguageOptions } from '@/lib/constants';
 
 interface FormData {
 	title: string;
 	description: string;
 	content: string;
 	tags: string[];
-	language: string;
+	programmingLanguage: string;
 	isPublic: boolean;
 }
 
@@ -59,7 +59,7 @@ export default function SnippetForm() {
 		description: '',
 		content: '',
 		tags: [],
-		language: 'javascript',
+		programmingLanguage: 'javascript',
 		isPublic: false,
 	});
 	const [currentTag, setCurrentTag] = useState('');
@@ -98,7 +98,8 @@ export default function SnippetForm() {
 		const newErrors: Partial<FormData> = {};
 		if (!formData.title.trim()) newErrors.title = 'Title is required';
 		if (!formData.content.trim()) newErrors.content = 'Content is required';
-		if (!formData.language) newErrors.language = 'Language is required';
+		if (!formData.programmingLanguage)
+			newErrors.programmingLanguage = 'Programming Language is required';
 		if (formData.description.length > 500)
 			newErrors.description = 'Description must be 500 characters or less';
 		setErrors(newErrors);
@@ -113,7 +114,7 @@ export default function SnippetForm() {
 				description: formData.description,
 				content: formData.content,
 				tags: formData.tags,
-				language: formData.language,
+				programmingLanguage: formData.programmingLanguage,
 				isPublic: formData.isPublic,
 			};
 
@@ -125,7 +126,7 @@ export default function SnippetForm() {
 				description: '',
 				content: '',
 				tags: [],
-				language: 'javascript',
+				programmingLanguage: 'javascript',
 				isPublic: false,
 			});
 
@@ -163,28 +164,35 @@ export default function SnippetForm() {
 							)}
 						</div>
 						<div className='space-y-2'>
-							<Label htmlFor='language' className='text-lg font-semibold'>
-								Language
+							<Label
+								htmlFor='programmingLanguage'
+								className='text-lg font-semibold'>
+								Programming Language
 							</Label>
 							<Select
-								name='language'
-								value={formData.language}
+								name='programmingLanguage'
+								value={formData.programmingLanguage}
 								onValueChange={value =>
-									setFormData({ ...formData, language: value })
+									setFormData({
+										...formData,
+										programmingLanguage: value,
+									})
 								}>
 								<SelectTrigger className='w-full transition-all duration-200 focus:ring-2 focus:ring-primary'>
-									<SelectValue placeholder='Select a language' />
+									<SelectValue placeholder='Select a programmingLanguage' />
 								</SelectTrigger>
 								<SelectContent>
-									{languageOptions.map(lang => (
+									{programmingLanguageOptions.map(lang => (
 										<SelectItem key={lang} value={lang}>
 											{lang}
 										</SelectItem>
 									))}
 								</SelectContent>
 							</Select>
-							{errors.language && (
-								<p className='text-red-500 text-sm'>{errors.language}</p>
+							{errors.programmingLanguage && (
+								<p className='text-red-500 text-sm'>
+									{errors.programmingLanguage}
+								</p>
 							)}
 						</div>
 					</div>
@@ -229,7 +237,7 @@ export default function SnippetForm() {
 						<TabsContent value='editor' className='border rounded-md p-4'>
 							<Editor
 								height='400px'
-								language={formData.language}
+								language={formData.programmingLanguage}
 								value={formData.content}
 								onChange={handleEditorChange}
 								theme={theme === 'dark' ? 'vs-dark' : 'light'}
@@ -256,7 +264,7 @@ export default function SnippetForm() {
 							<Highlight
 								theme={themes.nightOwl}
 								code={formData.content}
-								language={formData.language}>
+								language={formData.programmingLanguage}>
 								{({
 									className,
 									style,

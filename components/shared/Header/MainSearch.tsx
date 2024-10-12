@@ -11,17 +11,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Link from "next/link";
 
 const MainSearch = () => {
   return (
-    <div className="w-full flex-1 md:w-auto md:flex-none">
+    <div className="w-full flex-1 lg:w-auto lg:flex-none">
       <Sheet>
         <SheetTrigger asChild>
           <div>
             <Button
               variant="secondary"
-              className="relative h-8 w-full justify-start text-sm font-normal dark:border-gray-600 md:w-64 md:pr-12 hidden lg:inline-flex"
+              className="relative h-8 w-full justify-start text-sm font-normal dark:border-gray-600 lg:w-64 lg:pr-12 hidden lg:inline-flex"
             >
               <Search className="mr-2 h-4 w-4 text-primary dark:text-white" />
               <span className="hidden lg:inline-flex text-primary dark:text-gray-200">

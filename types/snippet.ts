@@ -1,4 +1,4 @@
-import { Snippet } from "@/redux/features/snippets/types";
+import { Snippet } from '@/redux/features/snippets/types';
 
 export interface User {
 	firstName: string;
@@ -9,7 +9,7 @@ export interface User {
 
 export interface SearchFormProps {
 	initialSearchTerm: string;
-	initialLanguage: string;
+	initialProgrammingLanguage: string;
 	initialTag: string;
 }
 
@@ -20,7 +20,7 @@ export interface SnippetCardProps {
 export interface MainSnippetsPageProps {
 	searchParams: {
 		search?: string;
-		language?: string;
+		programmingLanguage?: string;
 		tag?: string;
 	};
 	snippets: Snippet[];

@@ -6,7 +6,7 @@ export interface Snippet {
 	description?: string;
 	content: string;
 	tags: string[];
-	language: string;
+	programmingLanguage: string;
 	userId: string;
 	user: User;
 	isPublic: boolean;
@@ -27,12 +27,34 @@ export interface SnippetState {
 			hasPrevPage: boolean;
 		};
 	};
+	homeSnippets: {
+		snippets: Snippet[];
+		pagination: {
+			total: number;
+			page: number;
+			limit: number;
+			totalPages: number;
+			hasNextPage: boolean;
+			hasPrevPage: boolean;
+		};
+	};
 	selectedSnippet: Snippet | null;
 	loading: boolean;
 }
 
 export const initialState: SnippetState = {
 	snippets: {
+		snippets: [],
+		pagination: {
+			total: 0,
+			page: 1,
+			limit: 10,
+			totalPages: 0,
+			hasNextPage: false,
+			hasPrevPage: false,
+		},
+	},
+	homeSnippets: {
 		snippets: [],
 		pagination: {
 			total: 0,

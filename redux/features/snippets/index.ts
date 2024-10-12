@@ -25,15 +25,13 @@ const snippetSlice = createSlice({
 				(
 					state,
 					action: PayloadAction<{
-						data: {
-							snippets: Snippet[];
-							pagination: any;
-						};
+						snippets: Snippet[];
+						pagination: any;
 					}>,
 				) => {
 					state.loading = false;
-					state.snippets.snippets = action.payload.data.snippets;
-					state.snippets.pagination = action.payload.data.pagination;
+					state.homeSnippets.snippets = action.payload.snippets;
+					state.homeSnippets.pagination = action.payload.pagination;
 				},
 			)
 			.addCase(fetchHomeSnippets.rejected, (state, action) => {

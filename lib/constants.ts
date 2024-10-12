@@ -1,4 +1,4 @@
-export const languageOptions = [
+export const programmingLanguageOptions = [
 	'javascript',
 	'typescript',
 	'python',

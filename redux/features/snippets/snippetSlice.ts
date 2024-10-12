@@ -8,12 +8,20 @@ export const fetchHomeSnippets = createAsyncThunk(
 			page = 1,
 			search = '',
 			limit = 10,
-		}: { page?: number; search?: string; limit?: number },
+			programmingLanguage = '',
+			tags = [],
+		}: {
+			page?: number;
+			search?: string;
+			limit?: number;
+			programmingLanguage?: string;
+			tags?: string[];
+		},
 		{ rejectWithValue },
 	) => {
 		try {
 			const response = await api.get(
-				`/snippets?page=${page}&search=${search}&limit=${limit}`,
+				`/snippets?page=${page}&search=${search}&limit=${limit}&programmingLanguage=${programmingLanguage}&tags=${tags.join()}`,
 			);
 			return response.data;
 		} catch (error: any) {
@@ -25,31 +33,33 @@ export const fetchHomeSnippets = createAsyncThunk(
 export const fetchMySnippets = createAsyncThunk(
 	'snippets/fetchMine',
 	async (
-		{
-			page = 1,
-			search = '',
-			limit = 10,
-			language = '',
-			tag = [],
-		}: {
+		params: {
 			page?: number;
 			search?: string;
 			limit?: number;
-			language?: string;
-			tag?: string[];
+			programmingLanguage?: string;
+			tags?: string[];
 		},
-
 		{ rejectWithValue },
 	) => {
 		try {
-			const response = await api.get(
-				`/me/snippets?page=${page}&search=${search}&limit=${limit}&language=${language}&tags=${tag.join(
-					',',
-				)}`,
-			);
+			const queryParams = new URLSearchParams();
+
+			// Only add parameters that have values
+			if (params.page) queryParams.append('page', params.page.toString());
+			if (params.search) queryParams.append('search', params.search);
+			if (params.limit) queryParams.append('limit', params.limit.toString());
+			if (params.programmingLanguage)
+				queryParams.append('programmingLanguage', params.programmingLanguage);
+			if (params.tags && params.tags.length > 0)
+				queryParams.append('tags', params.tags.join(','));
+
+			const response = await api.get(`/me/snippets?${queryParams.toString()}`);
 			return response.data;
 		} catch (error: any) {
-			return rejectWithValue(error.response.data.errors);
+			return rejectWithValue(
+				error.response?.data?.errors || 'An error occurred',
+			);
 		}
 	},
 );
@@ -71,7 +81,7 @@ export interface SnippetData {
 	description?: string;
 	content: string;
 	tags: string[];
-	language: string;
+	programmingLanguage: string;
 	isPublic: boolean;
 }
 

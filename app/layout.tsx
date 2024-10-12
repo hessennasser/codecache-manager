@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>
+			<body className={`${inter.className} bg-slate-50 text-black dark:bg-slate-900 dark:text-white`}>
 				<ToastContainer />
 				<MainProvider>
 					<div className='flex flex-col min-h-screen'>

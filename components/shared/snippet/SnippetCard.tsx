@@ -55,7 +55,7 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
 					<Badge variant='outline' className='flex items-center gap-1'>
 						<Code className='w-4 h-4' />
 						<span className='uppercase text-xs font-semibold'>
-							{snippet.language}
+							{snippet.programmingLanguage}
 						</span>
 					</Badge>
 				</div>
@@ -68,7 +68,7 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
 					<Highlight
 						theme={themes.nightOwl}
 						code={snippet.content}
-						language={snippet.language}>
+						language={snippet.programmingLanguage}>
 						{({ className, style, tokens, getLineProps, getTokenProps }) => (
 							<pre
 								className={`${className} p-2 rounded-md`}
