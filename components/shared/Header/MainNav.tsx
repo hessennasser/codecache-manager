@@ -3,15 +3,13 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSelector } from 'react-redux';
 import { cn } from '@/lib/utils';
-import { Code, Home, Plus, User, Menu, LogIn, UserPlus } from 'lucide-react';
+import { Code, Home, Plus, User, Menu } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/shared/Header/ThemeSwitcher';
 import { UserNav } from './UserNav';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import MainSearch from './MainSearch';
-import { RootState } from '@/redux/store';
 import { useAppDispatch } from '@/hooks/useRedux';
 import { getMe } from '@/redux/features/auth/authSlice';
 import Cookies from 'js-cookie';

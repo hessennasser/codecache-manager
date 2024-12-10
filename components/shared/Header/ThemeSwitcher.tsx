@@ -13,7 +13,7 @@ export function ThemeSwitcher() {
   }
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className=" hidden md:flex items-center space-x-2">
       <Sun className="h-[1.2rem] w-[1.2rem]" />
       <Switch
         id="theme-mode"
