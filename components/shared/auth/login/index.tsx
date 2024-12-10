@@ -51,8 +51,11 @@ export default function Login() {
 
 	const onSubmit = async (data: LoginFormData) => {
 		try {
-			await dispatch(loginUser({ email: data.email, password: data.password }));
-			router.push('/profile');
+			const result = await dispatch(loginUser({ email: data.email, password: data.password }));
+
+			if (result.meta.requestStatus === 'fulfilled') {
+				router.push('/my-snippets');
+			}
 		} catch (error) {
 			console.error('Login failed:', error);
 		}

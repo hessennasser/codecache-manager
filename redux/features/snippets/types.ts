@@ -5,7 +5,10 @@ export interface Snippet {
 	title: string;
 	description?: string;
 	content: string;
-	tags: string[];
+	tags: {
+		id: string;
+		name: string;
+	}[];
 	programmingLanguage: string;
 	userId: string;
 	user: User;

@@ -123,13 +123,13 @@ export function SearchForm({
 				</div>
 				<div>
 					<Label htmlFor='programmingLanguage' className='text-sm font-medium'>
-						ProgrammingLanguage
+						Programming Language
 					</Label>
 					<Select
 						value={programmingLanguage}
 						onValueChange={setProgrammingLanguage}>
 						<SelectTrigger className='w-full sm:w-[200px]'>
-							<SelectValue placeholder='Select programmingLanguage' />
+							<SelectValue placeholder='Select Language' />
 						</SelectTrigger>
 						<SelectContent>
 							{programmingLanguages.map(lang => (

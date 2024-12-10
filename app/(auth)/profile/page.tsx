@@ -57,6 +57,7 @@ export default function ProfilePage() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isClient, setIsClient] = useState(false);
+	const [activeTab, setActiveTab] = useState('info');
 
 	useEffect(() => {
 		setIsClient(true);
@@ -90,6 +91,7 @@ export default function ProfilePage() {
 			await dispatch(updateProfile(formData));
 			dispatch(getMe());
 			setIsLoading(false);
+			setActiveTab('info'); // Switch back to info tab after successful update
 		} catch (err) {
 			setError('Failed to update profile. Please try again.');
 			dispatch(getMe());
@@ -148,7 +150,7 @@ export default function ProfilePage() {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<Tabs defaultValue='info' className='w-full'>
+					<Tabs value={activeTab} onValueChange={setActiveTab} defaultValue='info' className='w-full'>
 						<TabsList className='grid w-full grid-cols-2'>
 							<TabsTrigger value='info'>Profile Info</TabsTrigger>
 							<TabsTrigger value='edit'>Edit Profile</TabsTrigger>

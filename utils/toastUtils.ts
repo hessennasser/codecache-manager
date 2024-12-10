@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 type MessageType = string | string[] | { status?: string; errors?: string[] };
 
-export const showToast = (type: "success" | "error", message: MessageType) => {
+export const showToast = (type: "success" | "error" | "info", message: MessageType) => {
   let formattedMessage: string;
 
   if (typeof message === "string") {
@@ -21,5 +21,7 @@ export const showToast = (type: "success" | "error", message: MessageType) => {
     toast.success(formattedMessage);
   } else if (type === "error") {
     toast.error(formattedMessage);
+  } else if (type === "info") {
+    toast.info(formattedMessage);
   }
 };
