@@ -4,13 +4,13 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Code, Home, Plus, User, Menu } from 'lucide-react';
+import { Code, Home, Plus, User, Menu, LogIn, UserPlus } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/shared/Header/ThemeSwitcher';
 import { UserNav } from './UserNav';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import MainSearch from './MainSearch';
-import { useAppDispatch } from '@/hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { getMe } from '@/redux/features/auth/authSlice';
 import Cookies from 'js-cookie';
 
@@ -20,7 +20,7 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
 	const pathname = usePathname();
 	const dispatch = useAppDispatch();
-	const { user } = useSelector((state: RootState) => state.auth);
+	const { user } = useAppSelector(state => state.auth);
 	const token = Cookies.get('token');
 
 	const refreshUserInfo = () => {
