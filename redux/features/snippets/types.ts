@@ -12,8 +12,6 @@ export interface Snippet {
 	programmingLanguage: string;
 	userId: string;
 	user: User;
-	isPublic: boolean;
-	viewCount: number;
 	createdAt: Date;
 	updatedAt: Date;
 }

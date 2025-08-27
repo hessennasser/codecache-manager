@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import {
   Card,
@@ -40,7 +39,6 @@ interface FormData {
   content: string;
   tags: string[];
   programmingLanguage: string;
-  isPublic: boolean;
 }
 
 export default function SnippetForm() {
@@ -53,7 +51,6 @@ export default function SnippetForm() {
     content: "",
     tags: [],
     programmingLanguage: "javascript",
-    isPublic: false,
   });
   const [currentTag, setCurrentTag] = useState("");
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -169,11 +166,11 @@ export default function SnippetForm() {
             content: "",
             tags: [],
             programmingLanguage: "javascript",
-            isPublic: false,
           });
         }
       } catch (error) {
         showToast("error", "Failed to create snippet. Please try again.");
+        console.log("error on create snippet:", error);
       }
     }
   };
@@ -387,19 +384,6 @@ export default function SnippetForm() {
               Press Enter to add a tag. {MAX_TAGS - formData.tags.length} tags
               remaining.
             </p>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="isPublic"
-              checked={formData.isPublic}
-              onCheckedChange={(checked) =>
-                setFormData({ ...formData, isPublic: checked })
-              }
-            />
-            <Label htmlFor="isPublic" className="text-lg">
-              Make this snippet public
-            </Label>
           </div>
 
           {Object.keys(errors).length > 0 && (

@@ -138,10 +138,6 @@ export const SnippetCard: React.FC<SnippetCardProps> = ({ snippet }) => {
             </span>
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <Badge variant="secondary" className="flex items-center gap-1">
-              <Eye className="w-4 h-4" />
-              <span>{snippet.viewCount}</span>
-            </Badge>
             <span className="text-xs text-gray-500">
               {new Date(snippet.createdAt).toLocaleDateString()}
             </span>

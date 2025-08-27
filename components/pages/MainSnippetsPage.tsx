@@ -3,7 +3,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { SearchForm } from '../shared/snippet/SearchForm';
 import { SnippetCard } from '../shared/snippet/SnippetCard';
-import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { useRouter } from 'next/navigation';
 import { fetchHomeSnippets } from '@/redux/features/snippets/snippetSlice';
