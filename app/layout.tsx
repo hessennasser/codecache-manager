@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 // add title and desc meta tags
 export const metadata = {
-	title: 'CodeCache - Code snippets',
+	title: 'codeCache',
 	description: 'CodeCache - Code snippets for developers, engineers, and more.',
 };
 
