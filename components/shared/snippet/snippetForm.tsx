@@ -29,15 +29,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Editor from "@monaco-editor/react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { motion, AnimatePresence } from "framer-motion";
 import { Highlight, themes } from "prism-react-renderer";
-import { useRouter } from "next/navigation";
 import { programmingLanguageOptions } from "@/lib/constants";
 import { showToast } from "@/utils/toastUtils";
 
@@ -53,7 +46,6 @@ interface FormData {
 export default function SnippetForm() {
   const dispatch = useAppDispatch();
   const { theme } = useTheme();
-  const router = useRouter();
 
   const [formData, setFormData] = useState<FormData>({
     title: "",
