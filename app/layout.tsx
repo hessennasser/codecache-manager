@@ -19,7 +19,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang='en'>
+		<html lang='en' suppressHydrationWarning>
 			<body className={`${inter.className} bg-slate-50 text-black dark:bg-slate-900 dark:text-white`}>
 				<ToastContainer />
 				<MainProvider>
