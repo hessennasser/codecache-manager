@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';

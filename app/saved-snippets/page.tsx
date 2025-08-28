@@ -5,8 +5,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { SearchForm } from '@/components/shared/snippet/SearchForm';
 import { SnippetCard } from '@/components/shared/snippet/SnippetCard';
 import { fetchSavedSnippets } from '@/redux/features/snippets/savedSnippetsSlice';
 import Pagination from '@/components/shared/Pagination';
@@ -14,7 +12,6 @@ import { Snippet } from '@/redux/features/snippets/types';
 
 export default function SavedSnippetsPage() {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const { snippets, loading, pagination } = useAppSelector((state) => state.savedSnippets);
 
   useEffect(() => {

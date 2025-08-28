@@ -10,7 +10,6 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
@@ -96,6 +95,7 @@ export default function ProfilePage() {
 			setError('Failed to update profile. Please try again.');
 			dispatch(getMe());
 			setIsLoading(false);
+			console.log("Error updating profile:", err);
 		}
 	};
 
