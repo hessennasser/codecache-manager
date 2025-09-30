@@ -1,13 +1,10 @@
 import { Inter } from 'next/font/google';
 import { MainNav } from '@/components/shared/Header/MainNav';
-import '@/app/globals.css';
 import MainProvider from '@/components/providers';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
-// add title and desc meta tags
 export const metadata = {
 	title: 'codeCache',
 	description: 'CodeCache - Code snippets for developers, engineers, and more.',
